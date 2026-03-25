@@ -5,8 +5,11 @@ import type { Lang } from "@/lib/i18n";
 import { t } from "@/lib/i18n";
 import { publicUrl } from "@/lib/paths";
 import { projects, type Project } from "@/lib/projects";
+import { X } from "lucide-react";
 
-function getVideoEmbedUrl(url: string | undefined): { url: string; type: "iframe" | "video" | "link" } | null {
+function getVideoEmbedUrl(
+  url: string | undefined,
+): { url: string; type: "iframe" | "video" | "link" } | null {
   if (!url) return null;
 
   // Google Drive
@@ -118,7 +121,10 @@ export default function PortfolioClient() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailIndex, setDetailIndex] = useState(0);
   const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
-  const [activeVideo, setActiveVideo] = useState<{ url: string; type: "iframe" | "video" } | null>(null);
+  const [activeVideo, setActiveVideo] = useState<{
+    url: string;
+    type: "iframe" | "video";
+  } | null>(null);
   const detailsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -132,7 +138,10 @@ export default function PortfolioClient() {
   }, []);
 
   const toggleTheme = () => {
-    const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    const next =
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "light"
+        : "dark";
     document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem(THEME_KEY, next);
     setTheme(next);
@@ -177,13 +186,10 @@ export default function PortfolioClient() {
     if (!detailsOpen) document.body.style.overflow = "auto";
   }, [detailsOpen]);
 
-  const openZoom = useCallback(
-    (src: string, alt: string) => {
-      setZoom({ src, alt });
-      document.body.style.overflow = "hidden";
-    },
-    [],
-  );
+  const openZoom = useCallback((src: string, alt: string) => {
+    setZoom({ src, alt });
+    document.body.style.overflow = "hidden";
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -242,7 +248,12 @@ export default function PortfolioClient() {
             <a href="#" className="cv-btn">
               {t(lang, "nav.cv")}
             </a>
-            <button type="button" className="lang-btn" aria-label="Toggle theme" onClick={toggleTheme}>
+            <button
+              type="button"
+              className="lang-btn"
+              aria-label="Toggle theme"
+              onClick={toggleTheme}
+            >
               {theme === "dark" ? "Light" : "Dark"}
             </button>
             <button type="button" className="lang-btn" onClick={toggleLang}>
@@ -257,7 +268,8 @@ export default function PortfolioClient() {
           <p className="hello">{t(lang, "hero.hello")}</p>
           <h1>{t(lang, "hero.name")}</h1>
           <h2>
-            <span>{t(lang, "hero.role1")}</span> <span>{t(lang, "hero.role2")}</span>
+            <span>{t(lang, "hero.role1")}</span>{" "}
+            <span>{t(lang, "hero.role2")}</span>
           </h2>
           <p className="hero-text">{t(lang, "hero.text")}</p>
           <div className="hero-photo">
@@ -273,7 +285,12 @@ export default function PortfolioClient() {
           <h4>{t(lang, "about.stack")}</h4>
           <div className="stack-grid">
             {stackItems.map((item) => (
-              <a key={item.name} href={item.href} target="_blank" rel="noopener noreferrer">
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span>
                   <img src={item.icon} alt={item.name} />
                   {item.name}
@@ -329,8 +346,13 @@ export default function PortfolioClient() {
         }}
       >
         <div className="modal-content-container" ref={detailsRef}>
-          <button type="button" className="close-details" aria-label="Close" onClick={closeDetails}>
-            &times;
+          <button
+            type="button"
+            className="close-details"
+            aria-label="Close"
+            onClick={closeDetails}
+          >
+            <X size={20} />
           </button>
           <div className="modal-header">
             <h2>{current?.title}</h2>
@@ -344,7 +366,8 @@ export default function PortfolioClient() {
                   alt={current.title}
                   onClick={() => openZoom(publicUrl(src), current.title)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") openZoom(publicUrl(src), current.title);
+                    if (e.key === "Enter")
+                      openZoom(publicUrl(src), current.title);
                   }}
                   role="presentation"
                 />
@@ -365,8 +388,19 @@ export default function PortfolioClient() {
                 };
 
                 return (
-                  <button type="button" className="video-btn" onClick={handlePlay}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <button
+                    type="button"
+                    className="video-btn"
+                    onClick={handlePlay}
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
                       <polygon points="5 3 19 12 5 21 5 3" />
                     </svg>
                     {t(lang, "projects.videoLink")}
@@ -396,9 +430,19 @@ export default function PortfolioClient() {
                 className="nav-btn prev-project"
                 onClick={showPrev}
                 disabled={detailIndex === 0}
-                style={{ opacity: detailIndex === 0 ? 0.3 : 1, pointerEvents: detailIndex === 0 ? "none" : "auto" }}
+                style={{
+                  opacity: detailIndex === 0 ? 0.3 : 1,
+                  pointerEvents: detailIndex === 0 ? "none" : "auto",
+                }}
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
                 <span>{t(lang, "projects.prev")}</span>
@@ -410,11 +454,19 @@ export default function PortfolioClient() {
                 disabled={detailIndex >= projects.length - 1}
                 style={{
                   opacity: detailIndex >= projects.length - 1 ? 0.3 : 1,
-                  pointerEvents: detailIndex >= projects.length - 1 ? "none" : "auto",
+                  pointerEvents:
+                    detailIndex >= projects.length - 1 ? "none" : "auto",
                 }}
               >
                 <span>{t(lang, "projects.next")}</span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <path d="M9 18l6-6-6-6" />
                 </svg>
               </button>
@@ -432,8 +484,13 @@ export default function PortfolioClient() {
           if (e.target === e.currentTarget) closeZoom();
         }}
       >
-        <button type="button" className="modal-close" aria-label="Close" onClick={closeZoom}>
-          &times;
+        <button
+          type="button"
+          className="close-details2"
+          aria-label="Close"
+          onClick={closeZoom}
+        >
+          <X size={24} />
         </button>
         {zoom ? (
           <>
@@ -452,12 +509,22 @@ export default function PortfolioClient() {
           if (e.target === e.currentTarget) setActiveVideo(null);
         }}
       >
-        <button type="button" className="modal-close" aria-label="Close" onClick={() => setActiveVideo(null)}>
-          &times;
+        <button
+          type="button"
+          className="close-details2"
+          aria-label="Close"
+          onClick={() => setActiveVideo(null)}
+        >
+          <X size={24} />
         </button>
         <div className="video-modal-content">
           {activeVideo?.type === "iframe" ? (
-            <iframe src={activeVideo.url} allow="autoplay; fullscreen" allowFullScreen title="Project Video" />
+            <iframe
+              src={activeVideo.url}
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title="Project Video"
+            />
           ) : activeVideo?.type === "video" ? (
             <video controls autoPlay src={activeVideo.url} />
           ) : null}
