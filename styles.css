@@ -566,22 +566,15 @@ h2 {
   font-size: 1.1rem;
 }
 
-.close-details2 {
+.modal-close {
   position: absolute;
   top: 20px;
-  background: var(--bg);
   right: 35px;
-  border: none;
-  font-size: 1.5rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
   cursor: pointer;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  transition: 0.2s;
-  z-index: 1001;
 }
 
 .modal-close:hover,
