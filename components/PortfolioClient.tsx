@@ -6,6 +6,42 @@ import { t } from "@/lib/i18n";
 import { publicUrl } from "@/lib/paths";
 import { projects, type Project } from "@/lib/projects";
 
+function getVideoEmbedUrl(url: string | undefined): { url: string; type: "iframe" | "video" | "link" } | null {
+  if (!url) return null;
+
+  // Google Drive
+  if (url.includes("drive.google.com")) {
+    const idMatch = url.match(/\/file\/d\/([^/]+)/);
+    if (idMatch) {
+      return {
+        url: `https://drive.google.com/file/d/${idMatch[1]}/preview`,
+        type: "iframe",
+      };
+    }
+  }
+
+  // YouTube
+  if (url.includes("youtube.com") || url.includes("youtu.be")) {
+    const idMatch = url.match(/(?:v=|\/embed\/|\/watch\?v=|\/)([^#&?]{11})/);
+    if (idMatch) {
+      return {
+        url: `https://www.youtube.com/embed/${idMatch[1]}`,
+        type: "iframe",
+      };
+    }
+  }
+
+  // Local or direct video files
+  if (url.startsWith("/") || url.endsWith(".mp4") || url.endsWith(".webm")) {
+    return {
+      url: publicUrl(url),
+      type: "video",
+    };
+  }
+
+  return { url, type: "link" };
+}
+
 const THEME_KEY = "theme";
 
 const stackItems = [
@@ -82,6 +118,7 @@ export default function PortfolioClient() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [detailIndex, setDetailIndex] = useState(0);
   const [zoom, setZoom] = useState<{ src: string; alt: string } | null>(null);
+  const [activeVideo, setActiveVideo] = useState<{ url: string; type: "iframe" | "video" } | null>(null);
   const detailsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -131,6 +168,7 @@ export default function PortfolioClient() {
 
   const closeDetails = useCallback(() => {
     setDetailsOpen(false);
+    setActiveVideo(null);
     document.body.style.overflow = "auto";
   }, []);
 
@@ -152,6 +190,7 @@ export default function PortfolioClient() {
       if (e.key === "Escape") {
         closeZoom();
         closeDetails();
+        setActiveVideo(null);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -311,20 +350,30 @@ export default function PortfolioClient() {
                 />
               ))}
             </div>
-            {current?.video ? (
-              <a
-                id="modalVideoLink"
-                href={publicUrl(current.video)}
-                className="video-btn"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-                {t(lang, "projects.videoLink")}
-              </a>
-            ) : null}
+            <div className="modal-video">
+              {(() => {
+                const embed = getVideoEmbedUrl(current?.video);
+                if (!embed) return null;
+
+                const handlePlay = () => {
+                  if (embed.type === "iframe" || embed.type === "video") {
+                    setActiveVideo({ url: embed.url, type: embed.type });
+                    document.body.style.overflow = "hidden";
+                  } else {
+                    window.open(embed.url, "_blank", "noopener,noreferrer");
+                  }
+                };
+
+                return (
+                  <button type="button" className="video-btn" onClick={handlePlay}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    {t(lang, "projects.videoLink")}
+                  </button>
+                );
+              })()}
+            </div>
             <div className="modal-description" id="modalDesc">
               <p>{current?.description}</p>
             </div>
@@ -394,6 +443,25 @@ export default function PortfolioClient() {
             </div>
           </>
         ) : null}
+      </div>
+      <div
+        className={`modal video-modal${activeVideo ? " is-open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setActiveVideo(null);
+        }}
+      >
+        <button type="button" className="modal-close" aria-label="Close" onClick={() => setActiveVideo(null)}>
+          &times;
+        </button>
+        <div className="video-modal-content">
+          {activeVideo?.type === "iframe" ? (
+            <iframe src={activeVideo.url} allow="autoplay; fullscreen" allowFullScreen title="Project Video" />
+          ) : activeVideo?.type === "video" ? (
+            <video controls autoPlay src={activeVideo.url} />
+          ) : null}
+        </div>
       </div>
     </>
   );

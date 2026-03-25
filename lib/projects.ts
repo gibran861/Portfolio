@@ -35,7 +35,8 @@ export const projects: Project[] = [
       "/Acepoint/memberships.png",
       "/Acepoint/schedule.JPG",
     ],
-    video: "/Acepoint/full-video/Acepoint full project.mp4",
+    video:
+      "https://drive.google.com/file/d/1XME3AWHktHjniHaHXJzRjqR9UpKQ2CwW/view?usp=drive_link",
   },
   {
     id: "rdb",
@@ -70,10 +71,7 @@ export const projects: Project[] = [
       "Improved User Experience for Admin Workflows",
     ],
     tags: ["React", "TypeScript", "Zod", "UX"],
-    images: [
-      "/ACR/ADD+EDIT membership.gif",
-      "/ACR/delete membership.gif",
-    ],
+    images: ["/ACR/ADD+EDIT membership.gif", "/ACR/delete membership.gif"],
   },
   {
     id: "pokerspire",
@@ -100,7 +98,8 @@ export const projects: Project[] = [
       "/PokerSpire/stats.JPG",
       "/PokerSpire/chat.png",
     ],
-    video: "/PokerSpire/Gemnius_4SAE6_Commercial_video.mp4",
+    video:
+      "https://drive.google.com/file/d/1QHEnbiKQFWLjPnmXEwulCJLIfgP267V1/view?usp=drive_link",
   },
   {
     id: "manajero",
@@ -127,6 +126,8 @@ export const projects: Project[] = [
       "/manajero/votting for scrum master.JPG",
       "/manajero/result.JPG",
     ],
+    video:
+      "https://drive.google.com/file/d/1hhQXpoQNGogrxlyJzzU4_TjMmUo-cxz8/view?usp=drive_link",
   },
   {
     id: "upcoming",
