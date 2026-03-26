@@ -6,6 +6,7 @@ import { t } from "@/lib/i18n";
 import { publicUrl } from "@/lib/paths";
 import { projects, type Project } from "@/lib/projects";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 function getVideoEmbedUrl(
   url: string | undefined,
@@ -278,7 +279,14 @@ export default function PortfolioClient() {
           <p className="hero-text">{t(lang, "hero.text")}</p>
           <div className="hero-photo">
             <div className="photo-placeholder">
-              <img src="/cv4.jpg" alt="Khalil Karoui" />
+              <Image
+                src="/cv4.jpg"
+                alt="Khalil Karoui"
+                width={360}
+                height={480}
+                priority
+                className="hero-img"
+              />
             </div>
           </div>
         </section>
@@ -296,7 +304,12 @@ export default function PortfolioClient() {
                 rel="noopener noreferrer"
               >
                 <span>
-                  <img src={item.icon} alt={item.name} />
+                  <Image
+                    src={item.icon}
+                    alt={item.name}
+                    width={40}
+                    height={40}
+                  />
                   {item.name}
                 </span>
               </a>
@@ -364,16 +377,19 @@ export default function PortfolioClient() {
           <div className="modal-body">
             <div className="modal-images" id="modalImagesGrid">
               {current?.images.map((src) => (
-                <img
+                <Image
                   key={src}
                   src={publicUrl(src)}
                   alt={current.title}
+                  width={800}
+                  height={500}
                   onClick={() => openZoom(publicUrl(src), current.title)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter")
                       openZoom(publicUrl(src), current.title);
                   }}
                   role="presentation"
+                  className="modal-img-optimized"
                 />
               ))}
             </div>
@@ -498,7 +514,14 @@ export default function PortfolioClient() {
         </button>
         {zoom ? (
           <>
-            <img className="modal-content" src={zoom.src} alt={zoom.alt} />
+            <Image
+              className="modal-content"
+              src={zoom.src}
+              alt={zoom.alt}
+              width={1200}
+              height={800}
+              unoptimized={zoom.src.endsWith(".gif")}
+            />
             <div id="modalCaption" className="modal-caption">
               {zoom.alt}
             </div>
@@ -600,12 +623,14 @@ function ProjectRow({
         ) : (
           project.images.map((src) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               key={src}
               className="project-media"
               src={publicUrl(src)}
               alt={project.title}
-              loading="lazy"
+              width={600}
+              height={400}
+              unoptimized={src.endsWith(".gif")}
               onClick={(e) => {
                 e.stopPropagation();
                 onMediaClick(publicUrl(src), project.title);
