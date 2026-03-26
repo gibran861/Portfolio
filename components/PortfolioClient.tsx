@@ -390,6 +390,7 @@ export default function PortfolioClient() {
                   }}
                   role="presentation"
                   className="modal-img-optimized"
+                  unoptimized={src.endsWith(".gif")}
                 />
               ))}
             </div>
