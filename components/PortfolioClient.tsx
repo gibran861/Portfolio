@@ -245,7 +245,11 @@ export default function PortfolioClient() {
             <a href="#contact">{t(lang, "nav.contact")}</a>
           </nav>
           <div className="actions">
-            <a href="#" className="cv-btn">
+            <a
+              href={lang === "en" ? "/cv-en.pdf" : "/cv-fr.pdf"}
+              download
+              className="cv-btn"
+            >
               {t(lang, "nav.cv")}
             </a>
             <button
@@ -409,12 +413,12 @@ export default function PortfolioClient() {
               })()}
             </div>
             <div className="modal-description" id="modalDesc">
-              <p>{current?.description}</p>
+              <p>{current?.description?.[lang]}</p>
             </div>
             <div className="modal-features">
               <h5>{t(lang, "modal.features")}</h5>
               <ul id="modalFeaturesList">
-                {current?.features.map((f) => (
+                {current?.features?.[lang]?.map((f) => (
                   <li key={f}>{f}</li>
                 ))}
               </ul>
@@ -570,7 +574,7 @@ function ProjectRow({
         <h4>
           #{n} {project.title}
         </h4>
-        <p>{project.summary}</p>
+        <p>{project.summary[lang]}</p>
         <div className="tags">
           {project.tags.map((tag) => (
             <span key={tag}>{tag}</span>

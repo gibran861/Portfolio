@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Khalil Karoui | Portfolio",
   description: "Elegant bilingual portfolio of Khalil Jobrane Karoui.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
